@@ -1,10 +1,10 @@
-# What is Node jS?
+## What is Node jS? 
 
 -   Its a platform which allows us to run JavaScript on a computer / server.
 -   It is used to Read, delete and update files.
 -   Easiy communicate with a database.
 
-# Why to use Node.js
+## Why to use Node.js
 -   It uses JavaScript
 -   Very fast (runs on the V8 engine & uses non-blocking code)
 -   Huge ecosystem of open source package (npm)
@@ -22,7 +22,7 @@
     -   Templating
 
 
-#  V8 engine
+##  V8 engine
 -   Computers do not unserstand JavaScript
 -   A JavaScript engine takes JavaScript and converts it into somethig it does understand - machine Code
 
@@ -36,7 +36,7 @@
 `JavaScript` ---> `C++` -- `NodeJS` -- `V8` ---> `Machine COde`
 
 
-# The Global Object
+## The Global Object
 
 These objects are available in all modules. The following variables may appear to be global but are not. They exist only in the scope of modules, see the module system documentation:
 
@@ -72,7 +72,7 @@ The objects listed here are specific to Node.js. There are built-in objects that
     console.log(__filename) // OUTPUT: D:\MyGitHub\nodejs-tutorial-beginners\app.js
 ```
 
-# Function Expressions
+## Function Expressions
 
 ```javascript
     function callFuction(fun) {
@@ -87,7 +87,7 @@ The objects listed here are specific to Node.js. There are built-in objects that
     callFuction(sayHello)
 ```
 
-# Modules and require()
+## Modules and require()
 
 -   count.js
 
@@ -105,7 +105,7 @@ The objects listed here are specific to Node.js. There are built-in objects that
     console.log(counterModule([1, 2, 3, 4, 5, 6]))
 ```
 
-# Module Patterns
+## Module Patterns
 
 -   Export multiple function & variables
 
@@ -172,9 +172,9 @@ The objects listed here are specific to Node.js. There are built-in objects that
         }
     ```
 
-# Node Event Emitter / Cusotme Modules(Emitter)
+## Node Event Emitter / Cusotme Modules(Emitter)
 
-### Method -1: 
+#### Method -1: 
 -   custommodule.js
 ```javascript
     let events = require('events')
@@ -225,7 +225,7 @@ The objects listed here are specific to Node.js. There are built-in objects that
 ```
 
 
-# Reading & Writing Files
+## Reading & Writing Files
 
 
 ```javascript
@@ -259,4 +259,77 @@ The objects listed here are specific to Node.js. There are built-in objects that
 ```
 
 
-# Creating & Removing Directories
+## Creating & Removing Directories
+
+```javascript
+    const fs = require('fs')
+
+    /** Delete files */
+    fs.unlink('files/Dummy.txt', () => {
+        console.log('Dummy.txt file Deleted succesfully')
+    })
+
+    /** Delete sub files & Folder */
+
+    fs.unlink('./stuff/writeMe.txt', () => {
+        fs.rmdirSync('stuff')
+    })
+
+    /** Create Folder */
+
+    /** Sync */
+    // fs.mkdirSync('stuff')
+
+    /** Async */
+    fs.mkdir('stuff', () => {
+        console.log('stuff file Created succesfully')
+    })
+
+
+    /**  Delete Folder */
+
+    /** Sync */
+    // fs.rmdirSync('stuff')
+
+    /** Async */
+    fs.rmdir('stuff', () => {
+        console.log('stuff file Deleted succesfully')
+    })
+
+
+```
+
+
+## Creating a Server
+
+
+```javascript
+    const http = require('http')
+
+    /** When ever we send request to the server, below callback fuction will fire */
+    const server = http.createServer((req, response) => {
+        console.log(`request: ${(req.method)}`)
+        response.writeHead(200, { 'Content-Type': 'text/plain' })
+        response.end('Hey Prasanth')
+    })
+    /** Server is going to run in the URL 127.0.0.1 and port 2000 */
+    server.listen(2000, '127.0.0.1');
+
+    console.log('Listing to port 2000 !!!!')
+```
+
+## Streams and Buffers
+### Buffer:
+-   Temporary storage spot for a chunk of data that is being transferred from one place to another.
+-   THe buffer is filled with data, then passed along.
+-   Transfer small chunks of data at a time.
+
+
+### Streams
+-   Can create streams in Node.js to transfer data.
+-   Increasee performance 
+-   Writable streas - allow node js to send/write data to a stream
+-   Readable streams - allow node js to read data from stream
+-   Dupex - can read & write to a stream.
+## Readable Streams
+
