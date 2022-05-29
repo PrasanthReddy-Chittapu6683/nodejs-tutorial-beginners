@@ -332,4 +332,125 @@ The objects listed here are specific to Node.js. There are built-in objects that
 -   Readable streams - allow node js to read data from stream
 -   Dupex - can read & write to a stream.
 ## Readable Streams
+-   Readable streams - allow node js to read data from stream
 
+```javascript
+    const fs = require('fs')
+
+    const myReadStream = fs.createReadStream(__dirname + '//files//ReadableStreamData.txt')
+
+    myReadStream.on('data', (chunks) => {
+        console.log(`<<<<<<<<< new chunk received >>>>>>>>>> ${chunks}`)
+    })
+
+```
+
+## Writable Streams
+-   Writable streas - allow node js to send/write data to a stream
+
+```javascript
+    const fs = require('fs')
+
+    const myReadStream = fs.createReadStream(__dirname + '//files//ReadableStreamData.txt')
+    const myWritableStream = fs.createWriteStream(__dirname + '//files//WritableStreamData.txt')
+
+    let count = 0
+    myReadStream.on('data', (chunks) => {
+        console.log(`<<<<<<<<< new chunk received & Writing >>>>>>>>>> ${chunks}`)
+        count++;
+        myWritableStream.write(chunks, (error) => {
+            console.log('Write completed > ' + count)
+        })
+    })
+
+```
+## Pipes
+
+
+```javascript
+    const fs = require('fs')
+    const http = require('http')
+
+    /** When ever we send request to the server, below callback fuction will fire */
+    const server = http.createServer((req, response) => {
+        console.log(`request: ${(req.method)}`)
+        response.writeHead(200, { 'Content-Type': 'text/plain' })
+
+        const myReadStream = fs.createReadStream(__dirname + '//files//ReadableStreamData.txt')
+        const myWritableStream = fs.createWriteStream(__dirname + '//files//WritableStreamData.txt')
+
+        /**Writing to text file */
+        myReadStream.pipe(myWritableStream)
+
+        /**Sending data to Browser client */
+        myReadStream.pipe(response)
+
+        // response.end('Hey Prasanth')
+    })
+
+    server.listen(2001, '127.0.0.1');
+
+    console.log('Listing to port 2001 !!!!')
+```
+## Serving HTML Pages from Node to client browser
+
+-   <b>NOTE:: response.writeHead(200, { 'Content-Type': `'text/html'` })</b>
+
+```javascript
+    const fs = require('fs')
+    const http = require('http')
+
+    /** When ever we send request to the server, below callback fuction will fire */
+    const server = http.createServer((req, response) => {
+        console.log(`request: ${(req.method)}`)
+        response.writeHead(200, { 'Content-Type': 'text/html' })
+
+        const myReadStream = fs.createReadStream(__dirname + '//index.html')
+
+
+        /**Sending data to Browser client */
+        myReadStream.pipe(response)
+
+        // response.end('Hey Prasanth')
+    })
+
+    server.listen(2002, '127.0.0.1');
+
+    console.log('Listing to port 2002 !!!!')
+
+```
+
+```html
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <style>
+            body {
+                background-color: skyblue;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #fff;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 48px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-align: center;
+            }
+
+            p {
+                font-size: 16px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Welcoe to Node JS beginners tutorial</h1>
+        <p>Hey I am Prasanth CV</p>
+    </body>
+
+    </html>
+```
