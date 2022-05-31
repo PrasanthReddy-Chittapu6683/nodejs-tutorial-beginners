@@ -1,20 +1,21 @@
-// const express = require('express')
-// const app = express();
+const express = require('express')
+const ejs = require('ejs')
+const todoController = require('./controllers/TodoController')
 
-// app.set('view engine', 'ejs')
+const app = express()
 
-// app.get('/contact', (req, res) => {
-//     res.sendFile(__dirname + '//contact.html')
-// })
+/** Setup Template engine */
+app.set('view engine', 'ejs')
 
-// app.get('/newFile/:id', function (req, res) {
-//     let data = {
-//         age: 32,
-//         job: 'UI Developer'
-//     }
-//     res.render('newFile', {
-//         person: req.params.id, data: data
-//     })
-// })
+/** Load Static files */
+app.use(express.static('./public'))
 
-// app.listen(1212)
+/** Fire controllers */
+todoController(app)
+
+
+
+
+
+/** Listen to Port */
+app.listen(5000)
