@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/assets/styles.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <%- include ('partials/nav.ejs') -%>
+        <h1>Hey I am Prasanth CV</h1>
+        <p>Follow me at my <a href="https://github.com/PrasanthReddy-Chittapu6683" target="_blank">GitHub </a></p>
+        <P>Thanks for getting in touch !</P>
+        <p>You Contacted <strong>
+                <%= data.who %>
+            </strong> in the department <strong>
+                <%= data.department %>
+            </strong>
+        </p>
+        <p>Will replay to Email <strong>
+                <%= data.email %>
+            </strong>
+        </p>
+</body>
+
+</html>

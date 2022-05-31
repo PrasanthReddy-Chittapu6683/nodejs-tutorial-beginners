@@ -1,55 +1,20 @@
+// const express = require('express')
+// const app = express();
 
-/** Modules and require() */
-const counterModule = require('./count')
-const commonStuff = require('./stuff')
-const customModule = require('./custommodule')
+// app.set('view engine', 'ejs')
 
-console.log(counterModule([1, 2, 3, 4, 5, 6]))
+// app.get('/contact', (req, res) => {
+//     res.sendFile(__dirname + '//contact.html')
+// })
 
-console.log(commonStuff.counter([1, 2, 3, 4, 5, 6]))
-console.log(commonStuff.pi)
-console.log(commonStuff.adder(commonStuff.pi, 34))
-
-customModule.myEventEmitter.emit('someEvent', 'Hey am emitting the event !!!')
-
-// Global Objects
-// console.log('Hey Node JS')
-
-
-// setTimeout(() => {
-//     console.log('1 sec passed')
-// }, 1000);
-
-
-// let timer = 0
-// let timerFunc = setInterval(() => {
-//     timer += 2
-//     console.log(`${timer} seconds have passsed`)
-//     if (timer > 8) {
-//         clearInterval(timerFunc)
-//         console.log(`${timer} timer exits`)
+// app.get('/newFile/:id', function (req, res) {
+//     let data = {
+//         age: 32,
+//         job: 'UI Developer'
 //     }
-// }, 2000);
+//     res.render('newFile', {
+//         person: req.params.id, data: data
+//     })
+// })
 
-
-// console.log(__dirname)
-// console.log(__filename)
-
-
-/** Function Expression */
-
-// function callFuction(fun) {
-//     console.log(`Calling 'callFuction'`)
-//     fun()
-// }
-
-// let sayHello = function () {
-//     console.log(`Saying 'Hello'`)
-// }
-
-// callFuction(sayHello)
-
-
-
-
-
+// app.listen(1212)

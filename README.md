@@ -196,7 +196,7 @@ The objects listed here are specific to Node.js. There are built-in objects that
     const customModule = require('./custommodule')
     customModule.myEventEmitter.emit('someEvent', 'Hey am emitting the event !!!')
 ```
-### Method -2: 
+#### Method -2: 
 
 ```javascript
     const myUtils = require('util')
@@ -454,3 +454,412 @@ The objects listed here are specific to Node.js. There are built-in objects that
 
     </html>
 ```
+
+## Serving JSON Data
+-   Send JSON data to client browser
+-   `response.end` will accept only string / buffer data. So need to serialize the JSON object to string using `JSON.stringify`
+
+```javascript
+    const http = require('http')
+
+    /** When ever we send request to the server, below callback fuction will fire */
+    const server = http.createServer((req, response) => {
+        console.log(`request: ${(req.method)}`)
+        response.writeHead(200, { 'Content-Type': 'application/json' })
+        var myObj = {
+            name: 'Prasath',
+            job: 'Absolute Coders',
+        }
+        // response.end will accept only string / buffer data. So need to serialize the JSON object to string using JSON.stringify
+        response.end(JSON.stringify(myObj))
+    })
+    server.listen(2004, '127.0.0.1');
+    console.log('Listing to port 2004 !!!!')
+```
+
+## Basic Routing
+
+```javascript
+
+    const fs = require('fs')
+    const http = require('http')
+
+    /** When ever we send request to the server, below callback fuction will fire */
+    const server = http.createServer((req, response) => {
+        console.log(`request: ${(req.url)}`)
+        if (req.url === '/home' || req.url === '/') {
+            response.writeHead(200, { 'Content-Type': 'text/html' })
+            fs.createReadStream(__dirname + '//index.html').pipe(response)
+        } else if (req.url === '/contact') {
+            response.writeHead(200, { 'Content-Type': 'text/html' })
+            fs.createReadStream(__dirnames + '//contact.html').pipe(response)
+        } else if (req.url === '/api/prcv') {
+            let list = [{ name: 'Prasanth', age: 30 }, { name: 'Reddy', age: 25 }]
+            response.writeHead(200, { 'Content-Type': 'application/json' })
+            response.end(JSON.stringify(list))
+        } else {
+            response.writeHead(404, { 'Content-Type': 'text/html' })
+            fs.createReadStream(__dirname + '//404.html').pipe(response)
+
+        }
+    })
+
+    server.listen(2005, '127.0.0.1');
+    console.log('Listing to port 2005 !!!!')
+
+```
+
+```html
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <style>
+            body {
+                background-color: rgb(250, 162, 146);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #fff;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 48px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-align: center;
+            }
+
+            p {
+                font-size: 16px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>404, oops!</h1>
+        <p>Something went wrong!
+            <a href="/home">Go Home</a>
+        </p>
+    </body>
+
+    </html>
+
+```
+
+
+## Express
+-   Easy & Flexible routing system.
+-   Integrates with many templating engines.
+-   Contains a middleware framework.
+-   Its just a moudle written in Javascript which we can use in application.
+
+#### HTP Methods / Verbs
+-   GET
+-   POST
+-   DELETE
+-   PUT
+
+#### Responding to Requests
+-   GET : `app.get('route', fn)`
+-   POST : `app.post('route', fn)`
+-   DELETE : `app.delete('route', fn)`
+
+
+```javascript
+    const express = require('express')
+    const app = express()
+
+    app.get('/', (req, res) => {
+        res.send('Hey This is  <b> Home page </b> from Express GET request')
+    })
+
+    // Express by default identifies & take care of Headers
+    app.get('/contact', (req, res) => {
+        res.send('Hey This is <b> Contact page </b> from Express GET request')
+    })
+
+
+    app.listen(3000)
+```
+
+##  Express Route Params
+```javascript
+const express = require('express')
+const app = express()
+
+
+app.get('/profile/:id', (req, res) => {
+    res.send(`Hey This is  <b> having Profile ID ${req.params.id} </b> from Express GET request`)
+})
+
+app.listen(3000)
+```
+
+## Template Engines in Express
+
+-   Install new package `npm install ejs -save`
+-   `app.set('view engine', 'ejs')`
+-   Create a folder `views` & create a file `newFile.ejs`
+
+```javascript
+const express = require('express')
+const app = express();
+
+app.set('view engine', 'ejs')
+
+
+/** Using query params */
+app.get('/profile/:id', (req, res) => {
+    res.send(`Hey This is  <b> having Profile ID ${req.params.id} </b> from Express GET request`)
+})
+
+/** Sending static HTML pages to client browser. */
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '//index.html')
+})
+
+app.get('/contact', (req, res) => {
+    res.sendFile(__dirname + '//contact.html')
+})
+
+/** Sending dynamic HTML pages to client browser. */
+app.get('/newFile/:id', (req, res) => {
+    let data = {
+        age: 34,
+        job: 'UI Developer',
+        hobbie:['eating','reading','working']
+    }
+    res.render('newFile', {
+        person: req.params.id, data: data
+    })
+})
+
+
+
+app.listen(3000)
+
+```
+
+-   `views/newFile.ejs`
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: skyblue;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcoe to Profile of <u><i>
+                <%=person %>
+            </i></u>
+    </h1>
+    <p>Age : <strong>
+            <%=data.age %>
+        </strong></p>
+    <p>Job : <strong>
+            <%=data.job %>
+        </strong></p>
+    <h2>Hobbies</h2>
+    <ul>
+        <% data.hobbies.forEach (function(item){ %>
+            <li>
+                <%= item %>
+            </li>
+
+            <% }) %>
+    </ul>
+</body>
+
+</html>
+
+```
+
+## Partial Templates
+
+```javascript
+const express = require('express')
+const app = express();
+
+app.set('view engine', 'ejs')
+
+
+/** Using query params */
+app.get('/profile/:id', (req, res) => {
+    res.send(`Hey This is  <b> having Profile ID ${req.params.id} </b> from Express GET request`)
+})
+
+/** Sending static HTML pages to client browser. */
+app.get('/', (req, res) => {
+    res.render('index')// Rendering the HTML from views/index.ejs file
+})
+
+app.get('/contact', (req, res) => {
+    res.render('contact') // Rendering the HTML from views/contact.ejs file
+})
+
+/** Sending dynamic HTML pages to client browser. */
+app.get('/newFile/:id', (req, res) => {
+    let data = {
+        age: 34,
+        job: 'UI Developer',
+        hobbies: ['eating', 'reading', 'working']
+    }
+    res.render('newFile', {
+        person: req.params.id, data: data
+    })
+})
+
+
+
+app.listen(3000)
+```
+-   Folder: `partials/nav.ejs`
+```html
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+</nav>
+```
+-   Folder: `partials/contact.ejs`
+-   Syntax to add Partial view template `<%- include ('partials/nav.ejs') -%>`
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: skyblue;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('partials/nav.ejs') -%>
+        <h1>Hey I am Prasanth CV</h1>
+        <p>Follow me at my <a href="https://github.com/PrasanthReddy-Chittapu6683" target="_blank">GitHub </a></p>
+</body>
+
+</html>
+```
+
+##  Middleware & Static Files
+
+
+```javascript
+const express = require('express')
+const app = express();
+
+app.set('view engine', 'ejs')
+
+/** Redering static styles file using express Middleware*/
+app.use('/assets', express.static('assets'))
+```
+
+-   Create folder `assets/style.css`. Move the styles from `index.ejs` & `contact.ejs` files
+```html
+ body {
+     background-color: skyblue;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     color: #fff;
+     padding: 30px;
+ }
+
+ h1 {
+     font-size: 48px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     text-align: center;
+ }
+
+ p {
+     font-size: 16px;
+     text-align: center;
+ }
+
+```
+
+-   index.ejs
+```html
+<head>
+    <link href="/assets/styles.css" rel="stylesheet" type="text/css" />
+</head>
+```
+
+## Query Strings
+
+```javascript
+
+app.get('/contact', (req, res) => {
+    res.render('contact', { qs: req.query }) // Rendering the HTML from views/contact.ejs file
+})
+
+```
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/assets/styles.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <%- include ('partials/nav.ejs') -%>
+        <h1>Hey I am Prasanth CV</h1>
+        <p>Follow me at my <a href="https://github.com/PrasanthReddy-Chittapu6683" target="_blank">GitHub </a></p>
+        <p>
+            Query Param: <%= qs.dept %>
+        </p>
+        <form id="contact-form">
+            <label for="who">WHo do you want to contact</label>
+            <input type="text" name="'who" value="<%= qs.person %>" <label for="department">Which department</label>
+            <input type="text" name="department" value="<%= qs.dept %>" <label for="email">Your email</label>
+            <input type="text" name="email">
+            <input type="submit" value="submit">
+
+        </form>
+</body>
+
+</html>
+```
+
+##  Handling POST Requests

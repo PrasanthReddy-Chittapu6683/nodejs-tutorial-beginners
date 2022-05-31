@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-tutorial-beginners",
+  "description": "-   Its a platform which allows us to run JavaScript on a computer / server.\r -   It is used to Read, delete and update files.\r -   Easiy communicate with a database.",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrasanthReddy-Chittapu6683/nodejs-tutorial-beginners.git"
+  },
+  "keywords": [
+    "nodejs",
+    "tutorial"
+  ],
+  "author": "Prasanth CV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PrasanthReddy-Chittapu6683/nodejs-tutorial-beginners/issues"
+  },
+  "homepage": "https://github.com/PrasanthReddy-Chittapu6683/nodejs-tutorial-beginners#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  }
+}
